@@ -1,5 +1,4 @@
-# YandexTask
-YandexTest
+# YandexTest
 
 **Задача 1: контейнерный контроллер без использования autolayout**
 
