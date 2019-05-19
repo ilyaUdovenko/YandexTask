@@ -1,7 +1,7 @@
 # YandexTask
 YandexTest
 
-Задача 1: контейнерный контроллер без использования autolayout 
+**Задача 1: контейнерный контроллер без использования autolayout**
 
 Существует класс BeautifulCardViewController: UIViewController. 
 
@@ -16,9 +16,11 @@ YandexTest
 3. BeautifulCardViewController.view занимает как можно меньше места на экране. 
 
 При реализации нельзя использовать autolayout.
-Задача 2: конкурентный доступ к мутабельным данным 
+
+**Задача 2: конкурентный доступ к мутабельным данным**
 
 Задан источник данных:
+```
 enum DataSource {
  static func aqcuireNextItem(currentItem: String, completion: @escaping (String) -> Void) {
   queue.async {
@@ -29,9 +31,11 @@ enum DataSource {
 
  private static let queue: DispatchQueue
 }
+```
 Источник полностью потокобезопасен, не использует главную очередь, асинхронно получает данные и возвращает результат в completion на внутренней приватной очереди. 
 
 Есть класс, выступающий фасадом для последних полученных данных, которые обновляются раз в секунду. Сервисы читают из него данные на главном потоке:
+```
 final class Producer {
  var currentItem: String
 
@@ -53,6 +57,7 @@ final class Producer {
    }
  }
 }
+```
 В какой-то момент потребителей currentItem стало очень много и все они оказались на разных очередях. В результате главный поток оказался забит операциями чтения currentItem и интерфейс стал тормозить. 
 
 Необходимо модифицировать класс Producer таким образом, чтобы он: 
@@ -60,18 +65,19 @@ final class Producer {
 1. максимально эффективно работал в случае, когда запросов на чтение currentItem очень много и они все исходят с разных очередей; 
 
 2. не использовал DispatchQueue.main.
-Задача 3: группировка асинхронно получаемых данных 
+
+**Задача 3: группировка асинхронно получаемых данных**
 
 Есть функция: 
-
+```
 func run(command: String, response: @escaping (String) -> Void, responseQueue: DispatchQueue) 
-
+```
 Функция полностью потокобезопасна, выполняет команду и выдает результат в блоке response, который выполняется на очереди responseQueue. 
 
 Необходимо написать фукнцию: 
-
+```
 func run(commands: [String], response: @escaping ([String]) -> Void, responseQueue: DispatchQueue) 
-
+```
 удовлетворяющую следующим требованиям: 
 
 1. порядок передаваемых в response результатов соответствует порядку передаваемых в commands команд; 
